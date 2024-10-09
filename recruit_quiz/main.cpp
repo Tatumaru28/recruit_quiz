@@ -62,7 +62,7 @@ int main()
 	x = uniform_int_distribution<>(1, 10)(rand);
 	y = uniform_int_distribution<>(1, 5)(rand) * 3;
 	questions.push_back({
-		"底面の半径" + to_string(x) + "cm、高さ" + to_string(y) + "cmのの円錐がある。\n"+
+		"底面の半径" + to_string(x) + "cm、高さ" + to_string(y) + "cmのの円錐がある。\n" +
 		"この円錐の体積をXπcm^3とする。Xの値を求めよ。",
 		to_string(x * x * y / 3)
 		});
@@ -80,12 +80,25 @@ int main()
 	y = uniform_int_distribution<>(1, 6 - x)(rand);
 	z = gcd(y + 1, 6);
 	questions.push_back({
-	"サイコロを1個振って" + to_string(x) + "から" + to_string(x + y) + "が出る確率を求めよ。\n" ,
+	"サイコロを1個振って" + to_string(x) + "から" + to_string(x + y) + "が出る確率を求めよ。" ,
 	to_string((y + 1) / z) + "/" + to_string(6 / z)
 		});
 
+	//順列
+	x = uniform_int_distribution<>(3, 7)(rand);
+	y = uniform_int_distribution<>(1, x)(rand);
+	z = 1;
+	for (int i = 0; i < y; i++)
+	{
+		z *= x - i;
+	}
+	questions.push_back({
+		to_string(x) + "人のうち" + to_string(y) + "人を選んで並べる方法は何通りあるか?",
+		to_string(z)
+		});
 
-	cout << "[リクルート試験対策クイズ]\n";
+
+		cout << "[リクルート試験対策クイズ]\n";
 
 	for (const auto& e : questions) {
 
@@ -101,4 +114,4 @@ int main()
 			cout << "間違い!正解は" << e.a << "\n";
 		}
 	}	//for questions
-}
+};
