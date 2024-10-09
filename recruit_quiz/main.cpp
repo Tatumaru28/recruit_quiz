@@ -54,6 +54,13 @@ int main()
 		x * x * y / 3
 		});
 
+	//球の体積
+	int r = uniform_int_distribution<>(1, 5)(rand) * 3;
+	questions.push_back({
+		"半径" + to_string(r) + "cmの球がある。\n" +
+		"この球の体積をXπcm^3とする。Xの体積を求めよ。",
+		r * r * r * 4 / 3
+		});
 
 
 	cout << "[リクルート試験対策クイズ]\n";
