@@ -103,7 +103,7 @@ QuestionList CreateIdiomExam()
 		{ "言質を取る", "証拠となる言葉を聞き出す" },
 		{ "糠(ぬか)に釘", "効き目がない" },
 		{"二階から目薬","回りくどくて効果がない"},
-		{"意表をつく","	予想外なことをして驚かせる"},
+		{"意表をつく","予想外なことをして驚かせる"},
 		{"禁じざるを得ない","禁止しなくてはならない"},
 		{"虎の尾を踏む","進んで危険なことをする"},
 		{"目から鼻へ抜ける","頭の回転が早くて行動が素早い"},
@@ -136,7 +136,7 @@ QuestionList CreateIdiomExam()
 
 		}
 
-		questions.push_back({ s, "1" });
+		questions.push_back({ s, to_string(correctNo)});
 
 	}
 	return questions;
