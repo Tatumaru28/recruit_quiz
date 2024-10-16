@@ -2,14 +2,8 @@
 #include<string>
 #include<random>
 #include<vector>
+#include"question.h"
 using namespace std;
-
-//–â‘è•¶‚Æ“š‚¦‚ğ‚Ü‚Æ‚ß‚é\‘¢‘Ì
-struct Question
-{
-	string q;
-	string a;
-};
 
 //Å‘åŒö–ñ”‚ğ‹‚ß‚é
 int gcd(int a, int b)
