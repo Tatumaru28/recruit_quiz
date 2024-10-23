@@ -12,3 +12,6 @@ QuestionList CreateHomephoneExam();
 
 //‘Î‹`Œê‚Ì–â‘è‚ğì¬‚·‚é
 QuestionList CreateAntonymExam();
+
+//—Ş‹`Œê‚Ì–â‘è‚ğì¬‚·‚é
+QuestionList CreateSynonymExam();

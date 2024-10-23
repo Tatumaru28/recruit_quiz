@@ -41,7 +41,7 @@ QuestionList CreateKanjiExam()
 	constexpr int quizCount = 5;
 	QuestionList questions;
 	questions.reserve(quizCount);
-	const vector<int>indices = CreateRandamIndices(size(data));
+	const vector<int>indices = CreateRandomIndices(size(data));
 	random_device rd;
 
 	//問題の種類を選ぶ
@@ -117,7 +117,7 @@ QuestionList CreateIdiomExam()
 	constexpr int quizCount = 5;
 	QuestionList questions;
 	questions.reserve(quizCount);
-	const vector<int> indices = CreateRandamIndices(size(data));
+	const vector<int> indices = CreateRandomIndices(size(data));
 	random_device rd;
 
 	for (int i = 0; i < quizCount; i++) {
@@ -206,7 +206,7 @@ QuestionList CreateHomephoneExam()
 	constexpr int quizCount = 5;
 	QuestionList questions;
 	questions.reserve(quizCount);
-	const vector<int> indices = CreateRandamIndices(size(data));
+	const vector<int> indices = CreateRandomIndices(size(data));
 	random_device rd;
 
 	const int type = uniform_int_distribution<>(0, 1)(rd);
@@ -227,7 +227,7 @@ QuestionList CreateHomephoneExam()
 		const int correctNo = uniform_int_distribution<>(1, count)(rd);
 
 		//問題文を作成
-		const vector<int> answers = CreateRandamIndices(count);
+		const vector<int> answers = CreateRandomIndices(count);
 		string s = "「" + string(e.words[answers[correctNo - 1]].kanji) +
 			"」の意味として正しい番号を選べ";
 		for (int j = 0; j < count; j++)
@@ -265,7 +265,7 @@ QuestionList CreateAntonymExam()
 	constexpr int quizCount = 5;
 	QuestionList questions;
 	questions.reserve(quizCount);
-	const vector<int> indices = CreateRandamIndices(size(data));
+	const vector<int> indices = CreateRandomIndices(size(data));
 	random_device rd;
 
 	for (int i = 0; i < quizCount; i++)
@@ -289,5 +289,74 @@ QuestionList CreateAntonymExam()
 		}
 		questions.push_back({ s,to_string(correctNo) });
 	}
+	return questions;
+}
+
+
+/**
+* 類義語の問題を作成する
+*/
+QuestionList CreateSynonymExam()
+{
+	const struct {
+		int count;            // 要素数
+		const char* kanji[4]; // 類義語の配列
+
+	} data[] = {
+		{ 2, "仲介(ちゅうかい)", "斡旋(あっせん)" },
+		{ 3, "夭逝(ようせい)", "夭折(ようせつ)", "早世(そうせい)" },
+		{ 3, "交渉(こうしょう)", "折衝(せっしょう)", "協議(きょうぎ)" },
+		{ 3, "抜群(ばつぐん)", "傑出(けっしゅつ)", "出色(しゅっしょく)" },
+		{ 4, "熟知(じゅくち)", "通暁(つうぎょう)", "知悉(ちしつ)", "精通(せいつう)" },
+	};
+
+	constexpr int quizCount = 5;
+	QuestionList questions;
+	questions.reserve(quizCount);
+	const vector<int> indices = CreateRandomIndices(size(data));
+	random_device rd;
+
+	
+	for (int i = 0; i < quizCount; i++) {
+		// 間違った番号をランダムに選ぶ
+		const int correctIndex = indices[i];
+		vector<int> answers = CreateWrongIndices(size(data), correctIndex);
+
+		// ランダムな位置を正しい番号で上書き
+		const int correctNo = std::uniform_int_distribution<>(1, 4)(rd);
+		answers[correctNo - 1] = correctIndex;
+
+		// 出題する類義語を選択
+		const auto& e = data[indices[i]];
+		const int object = std::uniform_int_distribution<>(0, e.count - 1)(rd);
+
+		// 問題文を作成
+		string s = "「" + string(data[correctIndex].kanji[object]) +
+			"」の類義語として正しい番号を選べ";
+		for (int j = 0; j < 4; j++) {
+			if (j == correctNo - 1) {
+				// 出題する語「以外」の類義語を正解として選択
+				int other = std::uniform_int_distribution<>(0, e.count - 2)(rd);
+				if (other >= object) {
+					other++;
+
+				}
+				s += "\n  " + to_string(j + 1) + ":" + e.kanji[other];
+
+			}
+			else {
+				// 誤答を選択
+				const auto& f = data[answers[j]];
+				const  int k = std::uniform_int_distribution<>(0, f.count - 1)(rd);
+				s += "\n  " + to_string(j + 1) + ":" + f.kanji[k];
+
+			}
+
+		}
+
+		questions.push_back({ s, to_string(correctNo) });
+
+	}
+
 	return questions;
 }
