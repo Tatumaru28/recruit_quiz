@@ -120,6 +120,8 @@ int main()
 			questions = CreateKanjiExam();
 			const QuestionList idiomExam = CreateIdiomExam();
 			questions.insert(questions.end(), idiomExam.begin(), idiomExam.end());
+			QuestionList homephoneExam = CreateHomephoneExam();
+			questions.insert(questions.end(), homephoneExam.begin(), homephoneExam.end());
 		}
 
 	for (const auto& e : questions) {
