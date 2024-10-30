@@ -131,6 +131,9 @@ QuestionList CreateEnglishPhraseExam()
 		 { "be not supposed to [A]", "[A]‚µ‚Ä‚Í‚¢‚¯‚È‚¢‚±‚Æ‚É‚È‚Á‚Ä‚¢‚é",
 			"You are not supposed to enter this room.", "‚±‚Ì•”‰®‚É“ü‚Á‚Ä‚Í‚¢‚¯‚Ü‚¹‚ñB",
 			3, { 2, 3, 4 }},
+		{"be going to [A]","[A]‚·‚é‚Â‚à‚è‚¾",
+		"I am going to visit Osaka.","‘åã‚És‚­‚Â‚à‚è‚¾B",
+			2,{ 2, 3 }},
 	};
 
 	constexpr int quizCount = 5;
