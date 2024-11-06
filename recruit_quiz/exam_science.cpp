@@ -87,7 +87,7 @@ QuestionList CreatePhysicsExam()
 
 		int v0 = uniform_int_distribution<>(1, 10)(rd); // ‰‘¬
 		t = uniform_int_distribution<>(1, 10)(rd);  // ˆÚ“®ŠÔ
-		int v = v0 - 98 * t; // ‘¬“x
+		int v = v0 * 10 - 98 * t; // ‘¬“x
 		answer.clear();
 		if (v < 0) {
 			v = -v;
