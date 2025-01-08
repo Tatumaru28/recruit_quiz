@@ -7,6 +7,8 @@
 #include"exam_english.h"
 #include"exam_science.h"
 #include "exam_geography.h"
+#include "exam_politics.h"
+#include "utility.h"
 using namespace std;
 
 //最大公約数を求める
@@ -113,37 +115,42 @@ int main()
 		});
 
 
-		cout << "[リクルート試験対策クイズ]\n";
+	cout << "[リクルート試験対策クイズ]\n";
 
-		cout << "教科を選んでください\n1=数学\n2=国語\n3=英語\n4=理科\n5=地理\n";
-		int subject;
-		cin >> subject;
-		if (subject == 2)
-		{
-			questions = CreateKanjiExam();
-			const QuestionList idiomExam = CreateIdiomExam();
-			questions.insert(questions.end(), idiomExam.begin(), idiomExam.end());
-			QuestionList homephoneExam = CreateHomephoneExam();
-			questions.insert(questions.end(), homephoneExam.begin(), homephoneExam.end());
-			QuestionList antonymExam = CreateAntonymExam();
-			questions.insert(questions.end(), antonymExam.begin(), antonymExam.end());
-			QuestionList synonymExam = CreateSynonymExam();
-			questions.insert(questions.end(), synonymExam.begin(), synonymExam.end());
-		}
-		else if (subject == 3)
-		{
-			questions = CreateEnglishWordExam();
-			QuestionList phraseExam = CreateEnglishPhraseExam();
-			questions.insert(questions.end(), phraseExam.begin(), phraseExam.end());
-		}
-		else if (subject == 4)
-		{
-			questions = CreatePhysicsExam();
-		}
-		else if (subject == 5) 
-		{
-			questions = CreatePrefecturesExam();
-		}
+	cout << "教科を選んでください\n1=数学\n2=国語\n3=英語\n4=理科\n5=地理\n6=政治\n";
+	int subject;
+	cin >> subject;
+	if (subject == 2)
+	{
+		questions = CreateKanjiExam();
+		const QuestionList idiomExam = CreateIdiomExam();
+		questions.insert(questions.end(), idiomExam.begin(), idiomExam.end());
+		QuestionList homephoneExam = CreateHomephoneExam();
+		questions.insert(questions.end(), homephoneExam.begin(), homephoneExam.end());
+		QuestionList antonymExam = CreateAntonymExam();
+		questions.insert(questions.end(), antonymExam.begin(), antonymExam.end());
+		QuestionList synonymExam = CreateSynonymExam();
+		questions.insert(questions.end(), synonymExam.begin(), synonymExam.end());
+	}
+	else if (subject == 3)
+	{
+		questions = CreateEnglishWordExam();
+		QuestionList phraseExam = CreateEnglishPhraseExam();
+		questions.insert(questions.end(), phraseExam.begin(), phraseExam.end());
+	}
+	else if (subject == 4)
+	{
+		questions = CreatePhysicsExam();
+	}
+	else if (subject == 5)
+	{
+		questions = CreatePrefecturesExam();
+	}
+	else if (subject == 6)
+	{
+		questions = CreatePoliticsExam();
+	}
+
 
 	for (const auto& e : questions) {
 
@@ -151,6 +158,16 @@ int main()
 
 		string answer;
 		cin >> answer;
+
+
+		// 入力された答えをSJISからASCIIに変換する
+		const string ascii = ConvertSjisNumberToAscii(answer);
+		// 変換が成功した場合はASCII文字列に置き換える
+		if (!ascii.empty()) {
+			answer = ascii;
+
+		}
+
 
 		if (answer == e.a) {
 			cout << "正解!\n";
