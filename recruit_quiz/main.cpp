@@ -17,6 +17,7 @@ using namespace std;
 
 int main()
 {
+	
 	// 教科データ配列
 	static const struct {
 		const char* name;        // 教科名
@@ -58,138 +59,139 @@ int main()
 			questionCounts[i] = (int)tmp.size();
 		}
 
-	vector<int> correctCounts(size(subjectData));  // 各教科の正答数
-	int currentSubjectNo = 0;     // 出題中の教科番号
-	int currentAnsweredCount = 0; // 回答済みの問題数
-	for (const auto& e : questions) {
+		vector<int> correctCounts(size(subjectData));  // 各教科の正答数
+		int currentSubjectNo = 0;     // 出題中の教科番号
+		int currentAnsweredCount = 0; // 回答済みの問題数
+		for (const auto& e : questions) {
 
-		cout << e.q << "\n";
+			cout << e.q << "\n";
 
-		string answer;
-		cin >> answer;
-
-
-		// 入力された答えをSJISからASCIIに変換する
-		const string ascii = ConvertSjisNumberToAscii(answer);
-		// 変換が成功した場合はASCII文字列に置き換える
-		if (!ascii.empty()) {
-			answer = ascii;
-
-		}
+			string answer;
+			cin >> answer;
 
 
-		if (answer == e.a) {
-			cout << "正解!\n";
-			correctCounts[currentSubjectNo]++; // 正答数を増やす
-		}
-		else if (e.b.empty()) {
-			// 答えがひとつだけの場合
-			cout << "間違い!正解は" << e.a << "\n";
-		}
-		
-	
-		else {
-			// 答えが複数ある場合、いずれかと一致すれば正解とする
-			bool isMatch = false;
-			for (const auto& b : e.b) {
-				if (answer == b) {
-					isMatch = true; // 一致する答えが見つかった
-					break;
-
-				}
+			// 入力された答えをSJISからASCIIに変換する
+			const string ascii = ConvertSjisNumberToAscii(answer);
+			// 変換が成功した場合はASCII文字列に置き換える
+			if (!ascii.empty()) {
+				answer = ascii;
 
 			}
 
-			// 比較結果を出力
-			if (isMatch) {
-				cout << "正解！\n";
+
+			if (answer == e.a) {
+				cout << "正解!\n";
 				correctCounts[currentSubjectNo]++; // 正答数を増やす
 			}
+			else if (e.b.empty()) {
+				// 答えがひとつだけの場合
+				cout << "間違い!正解は" << e.a << "\n";
+			}
+
+
 			else {
-				cout << "間違い！　正解は" << e.a << "(または";
-				for (auto& b : e.b) {
-					cout << "、" << b;
+				// 答えが複数ある場合、いずれかと一致すれば正解とする
+				bool isMatch = false;
+				for (const auto& b : e.b) {
+					if (answer == b) {
+						isMatch = true; // 一致する答えが見つかった
+						break;
+
+					}
 
 				}
-				cout << ")\n";
 
-			}
+				// 比較結果を出力
+				if (isMatch) {
+					cout << "正解！\n";
+					correctCounts[currentSubjectNo]++; // 正答数を増やす
+				}
+				else {
+					cout << "間違い！　正解は" << e.a << "(または";
+					for (auto& b : e.b) {
+						cout << "、" << b;
 
-		} // if answer == e.a
+					}
+					cout << ")\n";
 
-		// 「回答済み問題数」が「教科の問題数」以上になったら、次の教科に進む
-		if (subject == 0) {
-			currentAnsweredCount++; // 回答済み問題数を増やす
-			if (currentAnsweredCount >= questionCounts[currentSubjectNo]) {
-				currentSubjectNo++; // 次の教科に進む
-				currentAnsweredCount = 0; // 回答済み問題数をリセット
+				}
 
-			}
+			} // if answer == e.a
 
-		} // if subject == 0
+			// 「回答済み問題数」が「教科の問題数」以上になったら、次の教科に進む
+			if (subject == 0) {
+				currentAnsweredCount++; // 回答済み問題数を増やす
+				if (currentAnsweredCount >= questionCounts[currentSubjectNo]) {
+					currentSubjectNo++; // 次の教科に進む
+					currentAnsweredCount = 0; // 回答済み問題数をリセット
 
-	}	//for questions
+				}
 
-	// 成績を表示
-	 cout << "\n--- 成績 ---\n";
-	if (subject > 0 && subject <= size(subjectData)) {
-		cout << subjectData[subject - 1].name << ": "
-			 << correctCounts[0] << '/' << questions.size() << '\n';
-		
-	}
-	else if (subject == 0) {
-		// 教科ごとの成績を表示しつつ、正答数の合計を計算
-		size_t totalCorrectCount = 0; // 正答数の合計
-		for (int i = 0; i < size(subjectData); i++) {
-			cout << subjectData[i].name << ": "
-				<< correctCounts[i] << '/' << questionCounts[i] << '\n';
-			totalCorrectCount += correctCounts[i];
+			} // if subject == 0
 
-		}
-		cout << "合計: " << totalCorrectCount << '/' << questions.size() << '\n';
-	}
-	// 成績をファイルに出力する
-	static const char filename[] = "リクルート対策試験成績表.txt";
-	ofstream ofs(filename, ios_base::app);
-	if (!ofs) {
-		cerr << "エラー: " << filename << "を開けません\n";
+		}	//for questions
 
-	}
-	else {
-		// 現在の時刻(協定世界時)を取得
-		const time_t t = time(nullptr);
-
-		// 協定世界時を時間構造体型に変換
-		tm examDate;
-		localtime_s(&examDate, &t);
-
-		// 時間構造体を文字列に変換
-		char strDate[100];
-		strftime(strDate, size(strDate), "%Y/%m/%d(%a) %T", &examDate);
-	
+		// 成績を表示
+		cout << "\n--- 成績 ---\n";
 		if (subject > 0 && subject <= size(subjectData)) {
-			// 教科テストの場合、試験した教科の成績だけを出力し、それ以外は空欄とする
-			ofs << strDate;
-			for (int i = 0; i < size(subjectData); i++) {
-				ofs << ',';
-				if (i == subject - 1) {
-					ofs << correctCounts[0] << '/' << questions.size();
-
-				}
-
-			}
-			cout << "成績を" << filename << "に出力しました\n";
+			cout << subjectData[subject - 1].name << ": "
+				<< correctCounts[0] << '/' << questions.size() << '\n';
 
 		}
 		else if (subject == 0) {
-			// 総合テストの場合、すべての教科の成績を出力する
-			ofs << strDate;
+			// 教科ごとの成績を表示しつつ、正答数の合計を計算
+			size_t totalCorrectCount = 0; // 正答数の合計
 			for (int i = 0; i < size(subjectData); i++) {
-				ofs << ',' << correctCounts[i] << '/' << questionCounts[i];
+				cout << subjectData[i].name << ": "
+					<< correctCounts[i] << '/' << questionCounts[i] << '\n';
+				totalCorrectCount += correctCounts[i];
 
 			}
-			cout << "成績を" << filename << "に出力しました\n";
+			cout << "合計: " << totalCorrectCount << '/' << questions.size() << '\n';
+		}
+		// 成績をファイルに出力する
+		static const char filename[] = "リクルート対策試験成績表.txt";
+		ofstream ofs(filename, ios_base::app);
+		if (!ofs) {
+			cerr << "エラー: " << filename << "を開けません\n";
 
 		}
-	} // if !ofs
+		else {
+			// 現在の時刻(協定世界時)を取得
+			const time_t t = time(nullptr);
+
+			// 協定世界時を時間構造体型に変換
+			tm examDate;
+			localtime_s(&examDate, &t);
+
+			// 時間構造体を文字列に変換
+			char strDate[100];
+			strftime(strDate, size(strDate), "%Y/%m/%d(%a) %T", &examDate);
+
+			if (subject > 0 && subject <= size(subjectData)) {
+				// 教科テストの場合、試験した教科の成績だけを出力し、それ以外は空欄とする
+				ofs << strDate;
+				for (int i = 0; i < size(subjectData); i++) {
+					ofs << ',';
+					if (i == subject - 1) {
+						ofs << correctCounts[0] << '/' << questions.size();
+
+					}
+
+				}
+				cout << "成績を" << filename << "に出力しました\n";
+
+			}
+			else if (subject == 0) {
+				// 総合テストの場合、すべての教科の成績を出力する
+				ofs << strDate;
+				for (int i = 0; i < size(subjectData); i++) {
+					ofs << ',' << correctCounts[i] << '/' << questionCounts[i];
+
+				}
+				cout << "成績を" << filename << "に出力しました\n";
+
+			}
+		} // if !ofs
+	}
 };
